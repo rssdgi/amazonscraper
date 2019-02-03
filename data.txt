@@ -1,0 +1,2 @@
+{"data": "2019-02-01", "listname": "my computer", "amazon": [{"name": "cpu", "id": "ABCD", "price": "300 EUR"}, {"name": "motherboard", "id": "EFGH", "price": "180 EUR"}, {"name": "gpu", "id": "IJKL", "price": "230 EUR"}]}
+{"data": "2019-02-02", "listname": "my computer", "amazon": [{"name": "cpu", "id": "ABCD", "price": "300 EUR"}, {"name": "motherboard", "id": "EFGH", "price": "180 EUR"}, {"name": "gpu", "id": "IJKL", "price": "230 EUR"}]}
