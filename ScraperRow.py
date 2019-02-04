@@ -36,7 +36,7 @@ class ScraperRow:
         try:
             headers = {'User-Agent': 'Mozilla/5.0'}
             url=self._url+id+"/"
-            print ("Quering page ",url)
+            #print ("Quering page ",url)
             response = requests.get(url,headers=headers)
             doc = html.fromstring(response.content)
             # find name
@@ -44,9 +44,10 @@ class ScraperRow:
             #print (response.content)
             # strip empty line from name array
             name=''.join(name).strip()
+            name=name.replace('\n','')
             # find amazon price
             price=doc.xpath(self.XPATH_PRICE)
-            price=(''.join(price).strip()).replace(",",".")
+            price=(''.join(price).strip()) #.replace(",",".")
             print("id ",id," name is ",name," price is ",price)
             itemsDict={}
             itemsDict['name']=name
