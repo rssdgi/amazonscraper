@@ -8,17 +8,21 @@ main scraper program
 """
 
 import json
-from ScraperRow import *
+from ScraperRow import ScraperRow
 
 if __name__ == "__main__":
     # read id list 
     idsFile='idsLists.json'
     itemsIds=[]
     i=0
+    scraperRow=ScraperRow()
+
     for line in open(idsFile, 'r') :  
         itemsIds.append(json.loads(line))
+    
+    for t in itemsIds:
+        print("processing list ",t['list'])
+        for x in t['ids']:
+            print ("getting from amazon id", x['id'], " ",x['desc'])
+            scraperRow.scrapItem(x['id'])
         
-    scraperRow=ScraperRow()
-    for t in itemsIds[0]['ids']:
-        print ("getting from amazon id", t['id'], " ",t['desc'])
-        scraperRow.scrapItem(t['id'])

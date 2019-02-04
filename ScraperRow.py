@@ -23,7 +23,8 @@ import requests
 from lxml import html
 
 class ScraperRow:
-    def _init_(self):
+    def __init__(self):
+        print("Initializing ScraperRow")
         self._rowDict={}
         self._itemsDictAr=[]
         self.XPATH_NAME='//h1[@id="title"]//text()'
@@ -35,17 +36,18 @@ class ScraperRow:
         try:
             headers = {'User-Agent': 'Mozilla/5.0'}
             url=self._url+id+"/"
+            print ("Quering page ",url)
             response = requests.get(url,headers=headers)
             doc = html.fromstring(response.content)
             # find name
             name=doc.xpath(self.XPATH_NAME)
-            print (response.content)
+            #print (response.content)
             # strip empty line from name array
             name=''.join(name).strip()
             # find amazon price
             price=doc.xpath(self.XPATH_PRICE)
             price=(''.join(price).strip()).replace(",",".")
-            #print("name is ",name," price is ",price)
+            print("id ",id," name is ",name," price is ",price)
             itemsDict={}
             itemsDict['name']=name
             itemsDict['id']=id
