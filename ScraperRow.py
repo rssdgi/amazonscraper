@@ -17,10 +17,12 @@ self.__itemsDictAr=[{name:, price:, id:}]
 setDate-> set date to rowDict
 setList-> set list to rowDict
 makeDictArray-> add the items arrray to the rowDict
+each scraperRow obj keeps only 1 row. Use ScraperTable obj to manage array of rows
 """
 
 import requests
 from lxml import html
+import re
 
 class ScraperRow:
     def __init__(self):
@@ -44,15 +46,23 @@ class ScraperRow:
             #print (response.content)
             # strip empty line from name array
             name=''.join(name).strip()
-            name=name.replace('\n','')
+            #remove any char that is not in the [] domain
+            name = re.sub('[^0-9a-zA-Z ]+', '', name)
+            name = re.sub('  +', '', name) #remove trailing spaces
             # find amazon price
-            price=doc.xpath(self.XPATH_PRICE)
-            price=(''.join(price).strip()) #.replace(",",".")
-            print("id ",id," name is ",name," price is ",price)
+            pricestr=doc.xpath(self.XPATH_PRICE)
+            pricestr=(''.join(pricestr).strip()) #.replace(",",".")
+            price=""
+            currency=""
+            if pricestr:
+                price=re.search(r'\d+.{0,1}\d+,{0,1}\d*', pricestr).group()
+                currency=re.search(r'\w{1,3}', pricestr).group()
+            print("id ",id," name is ",name," price is ",pricestr)
             itemsDict={}
             itemsDict['name']=name
             itemsDict['id']=id
             itemsDict['price']=price
+            itemsDict['currency']=currency
             self._itemsDictAr.append(itemsDict)
         except Exception as e:
             print (e)
@@ -66,4 +76,7 @@ class ScraperRow:
         # if the id has been scraped
         #if self._idDict['id'] not in [x for v in self._itemsDictAr for x in v.values()]:
         self._rowDict['items']=self._itemsDictAr
+        self._itemsDictAr=[]
+    def getRow(self):
+        return self._rowDict
 
